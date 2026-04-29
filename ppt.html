@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>NirogCare • Colorful Healthcare Platform | Fancy PPT</title>
+    <!-- Google Font & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: radial-gradient(circle at 0% 0%, #0b1120, #07111c);
+            overflow-x: hidden;
+            color: #ffffff;
+        }
+
+        /* SCROLL SNAP */
+        .slides-container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            scroll-snap-align: start;
+            min-height: 100vh;
+            padding: 60px 80px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+            transition: all 0.4s;
+        }
+
+        /* vibrant gradient overlays per slide */
+        .slide:nth-child(odd)::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(20,184,166,0.18), transparent 65%);
+            pointer-events: none;
+        }
+        .slide:nth-child(even)::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(245,158,11,0.15), transparent 65%);
+            pointer-events: none;
+        }
+
+        /* Brand badge floating */
+        .solution-banner {
+            position: absolute;
+            top: 24px;
+            right: 32px;
+            background: linear-gradient(115deg, #0F766E, #14B8A6, #2DD4BF);
+            padding: 8px 20px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            z-index: 20;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(4px);
+        }
+        .solution-banner span {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 30px;
+            margin-left: 10px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* Navigation dots (fancy) */
+        .nav-dots {
+            position: fixed;
+            right: 28px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.35);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
+        }
+        .nav-dot.active {
+            background: #F59E0B;
+            transform: scale(1.6);
+            box-shadow: 0 0 14px #F59E0B, 0 0 6px #14B8A6;
+        }
+
+        /* Typography with gradient */
+        h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            background: linear-gradient(130deg, #FFFFFF, #A7F3D0, #2DD4BF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.2rem;
+            letter-spacing: -0.02em;
+        }
+        h2 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            margin-bottom: 1.8rem;
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(to right, #FEF08A, #FDE047, #F59E0B);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 70px;
+            height: 4px;
+            background: linear-gradient(90deg, #2DD4BF, #F59E0B);
+            border-radius: 4px;
+        }
+        h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #FEF9C3;
+        }
+
+        /* cards & grids */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 28px;
+            margin: 2rem 0;
+        }
+        .stat-card {
+            background: rgba(15, 25, 35, 0.55);
+            backdrop-filter: blur(12px);
+            border-radius: 36px;
+            padding: 1.8rem;
+            text-align: center;
+            border: 1px solid rgba(45,212,191,0.3);
+            transition: all 0.25s ease;
+            box-shadow: 0 12px 28px -12px rgba(0,0,0,0.3);
+        }
+        .stat-card:hover {
+            transform: translateY(-8px);
+            border-color: #F59E0B;
+            background: rgba(20,184,166,0.2);
+        }
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #FDE047, #F59E0B);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+            margin: 2rem 0;
+        }
+        .feature-card {
+            background: rgba(0, 20, 30, 0.5);
+            backdrop-filter: blur(14px);
+            border-radius: 32px;
+            padding: 2rem;
+            border-left: 4px solid #2DD4BF;
+            transition: 0.2s;
+        }
+        .feature-card:hover {
+            background: rgba(45,212,191,0.1);
+            transform: scale(1.01);
+        }
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 30px 0;
+        }
+        .tech-item {
+            background: linear-gradient(115deg, #0F766E, #0D9488);
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 8px 14px rgba(0,0,0,0.2);
+            transition: 0.2s;
+        }
+        .tech-item i { margin-right: 8px; }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        .timeline-item {
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(8px);
+            border-radius: 32px;
+            padding: 1.2rem;
+            flex: 1;
+            text-align: center;
+            border-top: 3px solid #F59E0B;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            border-radius: 32px;
+            overflow: hidden;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(45,212,191,0.2);
+        }
+        .comparison-table th {
+            background: rgba(15,118,110,0.5);
+            font-weight: 700;
+        }
+
+        .badge-wow {
+            display: inline-block;
+            background: rgba(245,158,11,0.25);
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin: 0.5rem 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 32px;
+            background: linear-gradient(105deg, #0F766E, #F59E0B);
+            border: none;
+            border-radius: 60px;
+            font-weight: bold;
+            color: white;
+            transition: 0.2s;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(245,158,11,0.4);
+        }
+
+        @media (max-width: 1000px) {
+            .slide { padding: 40px 30px; }
+            h1 { font-size: 3.4rem; }
+            h2 { font-size: 2.5rem; }
+            .timeline { flex-direction: column; }
+        }
+        @media (max-width: 650px) {
+            .stats-grid, .features-grid { grid-template-columns: 1fr; }
+            .nav-dots { display: none; }
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            color: #2DD4BF;
+        }
+        @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(10px);} }
+        .glow-text { text-shadow: 0 0 12px rgba(45,212,191,0.5); }
+    </style>
+</head>
+<body>
+    <div class="nav-dots" id="navDots"></div>
+    <div class="slides-container" id="slidesContainer">
+
+        <!-- SLIDE 1: COVER - COLORFUL IMPACT -->
+        <div class="slide">
+            <div class="solution-banner">
+                🚀 Built for Everyone <span>AI Healthcare</span>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 70px; margin-bottom: 16px;"><i class="fas fa-heartbeat" style="color:#2DD4BF;"></i> <i class="fas fa-microphone-alt" style="color:#F59E0B;"></i></div>
+                <h1>NIROGCARE</h1>
+                <p style="font-size: 1.7rem; font-weight: 500; background: linear-gradient(145deg,#A7F3D0,#FDE047); -webkit-background-clip:text; background-clip:text; color:transparent;">Comprehensive Healthcare Platform</p>
+                <div style="width: 100px; height: 4px; background: linear-gradient(90deg, #2DD4BF, #F59E0B); margin: 30px auto;"></div>
+                <p style="font-size: 1.2rem; opacity: 0.9;">AI-Powered · Privacy First · Made in India 🇮🇳</p>
+                <div class="badge-wow"><i class="fas fa-check-circle"></i> Production ready · 100% Free · Offline mode</div>
+            </div>
+            <div class="scroll-indicator" onclick="nextSlide()"><i class="fas fa-chevron-down fa-2x"></i></div>
+        </div>
+
+        <!-- SLIDE 2: MISSION + STATS (COLORFUL) -->
+        <div class="slide">
+            <div class="solution-banner">⚡ Next-gen Health <span>Accessible</span></div>
+            <h2>Our Mission</h2>
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-number">50+</div><div>Medical Conditions<br>(AI Checker)</div></div>
+                <div class="stat-card"><div class="stat-number">100%</div><div>TypeScript<br>Coverage</div></div>
+                <div class="stat-card"><div class="stat-number">300KB</div><div>Gzipped bundle<br>Ultra fast</div></div>
+                <div class="stat-card"><div class="stat-number">10k+</div><div>Active users<br>Trusted</div></div>
+            </div>
+            <div style="background: linear-gradient(100deg, #0F766E30, #F59E0B20); border-radius: 28px; padding: 24px; margin-top: 1rem; backdrop-filter: blur(10px);">
+                <p style="font-size: 1.2rem;"><i class="fas fa-quote-left"></i> Making quality healthcare accessible to everyone — regardless of language, location, or technical expertise.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: AI FEATURES + HEALTH MONITORING (VIBRANT ICONS) -->
+        <div class="slide">
+            <div class="solution-banner">🧠 Intelligent Health Core</div>
+            <h2>AI & Health Suite</h2>
+            <div class="features-grid">
+                <div class="feature-card"><div class="feature-icon">🤖</div><h3>Symptom Checker 2.0</h3><p>AI-powered analysis, urgency assessment, 50+ conditions</p></div>
+                <div class="feature-card"><div class="feature-icon">❤️</div><h3>Heart & BP Tracker</h3><p>Systolic/Diastolic monitoring + trends</p></div>
+                <div class="feature-card"><div class="feature-icon">🩸</div><h3>Glucose + BMI</h3><p>Fasting, post-meal, body composition</p></div>
+                <div class="feature-card"><div class="feature-icon">😴</div><h3>Sleep & Step Counter</h3><p>Daily activity, sleep pattern analytics</p></div>
+                <div class="feature-card"><div class="feature-icon">🌸</div><h3>Period Tracker</h3><p>Women’s health, cycle predictions</p></div>
+                <div class="feature-card"><div class="feature-icon">🧘</div><h3>Breathing Exercises</h3><p>Stress relief & relaxation tools</p></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: EMERGENCY SOS + FAMILY DASHBOARD + PHARMACY -->
+        <div class="slide">
+            <div class="solution-banner">🛡️ Safety First</div>
+            <h2>Emergency & Family Ecosystem</h2>
+            <div class="tech-cloud">
+                <div class="tech-item"><i class="fas fa-exclamation-triangle"></i> Emergency SOS · Voice activation</div>
+                <div class="tech-item"><i class="fas fa-qrcode"></i> Medical ID QR</div>
+                <div class="tech-item"><i class="fas fa-users"></i> Family Dashboard</div>
+                <div class="tech-item"><i class="fas fa-store"></i> Pharmacy Locator</div>
+                <div class="tech-item"><i class="fas fa-hospital"></i> Hospital Finder</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                <div style="background: rgba(245,158,11,0.12); border-radius: 28px; padding: 20px;">
+                    <i class="fas fa-ambulance fa-2x" style="color:#F59E0B;"></i>
+                    <p><strong>SOS one-tap</strong> + GPS location sharing + Emergency contacts with one-tap calling.</p>
+                </div>
+                <div style="background: rgba(45,212,191,0.12); border-radius: 28px; padding: 20px;">
+                    <i class="fas fa-prescription-bottle-alt fa-2x" style="color:#2DD4BF;"></i>
+                    <p><strong>Prescription scanner</strong> OCR & Medication reminders, health records.</p>
+                </div>
+            </div>
+            <div class="badge-wow" style="margin-top: 20px;"><i class="fas fa-voice"></i> 10+ Voice commands · WCAG 2.1 AA · High contrast mode</div>
+        </div>
+
+        <!-- SLIDE 5: WEARABLE + GAMIFICATION + DIFFERENTIATION -->
+        <div class="slide">
+            <div class="solution-banner">⌚ Connected Ecosystem</div>
+            <h2>Wearables & Gamification</h2>
+            <div class="stats-grid" style="grid-template-columns: repeat(2,1fr);">
+                <div class="stat-card"><i class="fab fa-apple fa-3x"></i><br>Apple Health</div>
+                <div class="stat-card"><i class="fab fa-google fa-3x"></i><br>Google Fit</div>
+                <div class="stat-card"><i class="fab fa-fitbit fa-3x"></i><br>Fitbit</div>
+                <div class="stat-card"><i class="fas fa-chart-line fa-3x"></i><br>Garmin Connect</div>
+            </div>
+            <div class="comparison-table" style="margin-top: 20px;">
+                <thead><tr><th>Feature</th><th>NirogCare Edge</th></tr></thead>
+                <tbody>
+                    <tr><td>Offline Mode</td><td style="color:#FDE047;">✅ Core features work without internet</td></tr>
+                    <tr><td>Gamification</td><td>✨ Points, levels, streaks, 10+ achievements, family challenges</td></tr>
+                    <tr><td>Data Privacy</td><td>🔒 End-to-end encrypted, data export, HIPAA-ready architecture</td></tr>
+                </tbody>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: PERFORMANCE + DEV STACK (FANCY BADGES) -->
+        <div class="slide">
+            <div class="solution-banner">⚡ Performance Obsessed</div>
+            <h2>Tech Stack & Metrics</h2>
+            <div class="tech-cloud">
+                <span class="tech-item"><i class="fab fa-react"></i> React 18.3</span>
+                <span class="tech-item"><i class="fab fa-js"></i> TypeScript 5.8</span>
+                <span class="tech-item"><i class="fas fa-database"></i> Supabase + Firebase</span>
+                <span class="tech-item"><i class="fab fa-tailwind"></i> Tailwind + shadcn/ui</span>
+                <span class="tech-item"><i class="fas fa-chart-line"></i> Zustand + TanStack Query</span>
+                <span class="tech-item"><i class="fas fa-map-marker-alt"></i> Leaflet · Google Maps</span>
+            </div>
+            <div class="features-grid" style="grid-template-columns: repeat(2,1fr); margin-top: 20px;">
+                <div class="feature-card"><i class="fas fa-tachometer-alt"></i> <strong>Build time</strong> ~5.3s · TTI <5s</div>
+                <div class="feature-card"><i class="fas fa-code-branch"></i> <strong>70+ components</strong> · 15 hooks · 13 pages</div>
+                <div class="feature-card"><i class="fas fa-mobile-alt"></i> <strong>PWA ready</strong> · Offline mode</div>
+                <div class="feature-card"><i class="fas fa-shield-alt"></i> <strong>100% TypeScript</strong> · RLS Policies</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: ACCESSIBILITY + VOICE + FUTURE ROADMAP -->
+        <div class="slide">
+            <div class="solution-banner">🌍 Inclusive by design</div>
+            <h2>Accessibility & Roadmap</h2>
+            <div class="stats-grid" style="grid-template-columns: repeat(3,1fr);">
+                <div class="stat-card"><i class="fas fa-universal-access fa-2x"></i><br>WCAG 2.1 AA</div>
+                <div class="stat-card"><i class="fas fa-microphone-alt fa-2x"></i><br>Voice Commands</div>
+                <div class="stat-card"><i class="fas fa-text-height fa-2x"></i><br>Font scaling 4x</div>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item"><h3>✅ Phase 1</h3><p>MVP launch · AI Prescription Scanner · Emergency Features</p></div>
+                <div class="timeline-item"><h3>🔄 Phase 2</h3><p>Video Consultation · Multi-language (regional)</p></div>
+                <div class="timeline-item"><h3>🚀 Phase 3</h3><p>Native mobile apps (Capacitor/RN) · Advanced wearable AI coach</p></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: FAMILY HUB + PRESCRIPTION SCANNER SNIPPET -->
+        <div class="slide">
+            <div class="solution-banner">👨‍👩‍👧 Family First</div>
+            <h2>Family Health Dashboard</h2>
+            <div class="features-grid">
+                <div class="feature-card"><i class="fas fa-user-plus fa-2x"></i> Multi-member management · Granular permissions</div>
+                <div class="feature-card"><i class="fas fa-pills fa-2x"></i> Shared medication reminders · Family challenges</div>
+                <div class="feature-card"><i class="fas fa-chart-simple fa-2x"></i> Health reports & analytics for all members</div>
+            </div>
+            <div class="badge-wow" style="margin-top: 20px; background: #0F766E40;"><i class="fas fa-robot"></i> AI Health Coach · Predictive Insights · Urgency detection</div>
+        </div>
+
+        <!-- SLIDE 9: GOVERNMENT SCHEMES + MEDICAL RECORDS -->
+        <div class="slide">
+            <div class="solution-banner">📋 Holistic Management</div>
+            <h2>Medical Records & Benefits</h2>
+            <div class="comparison-table">
+                <tr><td>📄 Prescription Scanner (OCR)</td><td>🎯 Extract medicine details automatically</td></tr>
+                <tr><td>📚 Health Records</td><td>🩺 Organized medical history & allergies</td></tr>
+                <tr><td>🏛️ Government Schemes</td><td>🇮🇳 Access health benefits (Ayushman Bharat etc)</td></tr>
+                <tr><td>⚙️ Privacy Controls</td><td>🔐 Granular data sharing settings + Data export</td></tr>
+            </div>
+            <div style="margin-top: 30px; text-align: center;"><span class="tech-item"><i class="fas fa-flag-checkered"></i> Made in India · Free forever for all</span></div>
+        </div>
+
+        <!-- SLIDE 10: DEMO / DEPLOYMENT LINKS + BUTTONS -->
+        <div class="slide">
+            <div class="solution-banner">🚀 Try MVP</div>
+            <h2>Start Your Health Journey</h2>
+            <div class="stats-grid" style="grid-template-columns: repeat(2,1fr);">
+                <div class="stat-card"><i class="fab fa-github fa-3x"></i><br>github.com/bhabens170-cell/NirogCare</div>
+                <div class="stat-card"><i class="fas fa-globe fa-3x"></i><br>Live: nirogcare-9a3ac.web.app</div>
+                <div class="stat-card"><i class="fas fa-play-circle fa-3x"></i><br>Demo Credentials: (signup free)</div>
+                <div class="stat-card"><i class="fas fa-mobile-alt fa-3x"></i><br>PWA installable</div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="#" class="btn" onclick="alert('✨ Explore the platform: AI prescription scanner, SOS, family health. 🚀'); return false;"><i class="fas fa-stethoscope"></i> Launch NirogCare MVP</a>
+                <a href="#" class="btn" style="margin-left: 15px; background: linear-gradient(105deg,#F59E0B,#0F766E);" onclick="alert('📦 Clone & contribute: MIT license, full TypeScript stack.'); return false;"><i class="fab fa-github"></i> GitHub Repo</a>
+            </div>
+            <div class="badge-wow" style="margin-top: 30px;">✅ Production-ready · Offline-first · 100% Free</div>
+        </div>
+
+        <!-- SLIDE 11: THANK YOU + TEAM PUZZLE -->
+        <div class="slide">
+            <div class="solution-banner">❤️ Accessible Health</div>
+            <div style="text-align: center;">
+                <div><i class="fas fa-heartbeat fa-4x" style="color:#F59E0B;"></i> <i class="fas fa-hand-holding-heart fa-4x" style="color:#2DD4BF;"></i></div>
+                <h1 style="font-size: 4rem;">Thank You</h1>
+                <p style="font-size: 1.8rem; ">Empowering a healthier tomorrow</p>
+                <div style="width: 100px; height: 4px; background: linear-gradient(90deg, #2DD4BF, #F59E0B); margin: 25px auto;"></div>
+                <p>NirogCare — Your health, our priority ✨<br> AI · Family · Emergency · Voice · Wearables</p>
+                <div class="tech-cloud" style="justify-content: center; margin-top: 30px;">
+                    <span class="tech-item"><i class="fab fa-react"></i> React + TS</span>
+                    <span class="tech-item"><i class="fas fa-database"></i> Supabase/Firebase</span>
+                    <span class="tech-item"><i class="fas fa-mobile-alt"></i> Offline PWA</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const navContainer = document.getElementById('navDots');
+        let currentIdx = 0;
+
+        slides.forEach((_, idx) => {
+            const dot = document.createElement('div');
+            dot.classList.add('nav-dot');
+            if (idx === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => {
+                slides[idx].scrollIntoView({ behavior: 'smooth' });
+                updateActiveDot(idx);
+            });
+            navContainer.appendChild(dot);
+        });
+
+        function updateActiveDot(index) {
+            document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            currentIdx = index;
+        }
+
+        function nextSlide() {
+            if (currentIdx < slides.length - 1) {
+                slides[currentIdx + 1].scrollIntoView({ behavior: 'smooth' });
+                updateActiveDot(currentIdx + 1);
+            }
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const idx = Array.from(slides).indexOf(entry.target);
+                    updateActiveDot(idx);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        slides.forEach(slide => observer.observe(slide));
+    </script>
+</body>
+</html>
